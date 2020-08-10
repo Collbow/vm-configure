@@ -1,0 +1,126 @@
+version: '3.8'
+services:
+
+  jenkins:
+    image: jenkins/jenkins
+    container_name: jenkins
+    ports:
+      - '8080:8080'
+      - '9000:9000'
+    volumes:
+      - 'jenkins_home:/var/jenkins_home'
+    restart: always
+
+  growi:
+    image: weseek/growi
+    container_name: growi
+    ports:
+      - 80:3000
+    depends_on:
+      - growi-mongodb
+      - growi-elasticsearch
+      - growi-redis
+      - growi-plantuml
+    environment:
+      - BASE_URL=${BASE_URL}
+      - PASSWORD_SEED=${PASSWORD_SEED}
+      - MONGO_URI=mongodb://growi-mongodb:27017/growi
+      - ELASTICSEARCH_URI=http://growi-elasticsearch:9200/growi
+      - REDIS_URL=redis://growi-redis:6379/growi
+      - MATHJAX=1
+      - PLANTUML_URI=//growi-plantuml:8080
+      - FILE_UPLOAD=local
+    volumes:
+      - growi_data:/data
+    restart: always
+
+  growi-mongodb:
+    image: mongo:3.6.18
+    container_name: growi-mongodb
+    volumes:
+      - growi-mongodb_configdb:/data/configdb
+      - growi-mongodb_db:/data/db
+    restart: always
+
+  growi-elasticsearch:
+    image: elasticsearch:6.8.10
+    container_name: growi-elasticsearch
+    entrypoint: >
+        bash -c "
+        ./bin/elasticsearch-plugin list | grep -q analysis-kuromoji || ./bin/elasticsearch-plugin install analysis-kuromoji && 
+        ./bin/elasticsearch-plugin list | grep -q analysis-icu || ./bin/elasticsearch-plugin install analysis-icu && 
+        docker-entrypoint.sh"
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - 'growi-elasticsearch_data:/usr/share/elasticsearch/data'
+      - 'growi-elasticsearch_plugins:/usr/share/elasticsearch/plugins'
+      - 'growi-elasticsearch_config:/usr/share/elasticsearch/config'
+    restart: always
+
+  growi-redis:
+    image: redis
+    container_name: growi-redis
+    volumes:
+      - "growi-redis_data:/data"
+    restart: always
+
+  growi-plantuml:
+    image: plantuml/plantuml-server
+    container_name: growi-plantuml
+    restart: always
+
+volumes:
+  jenkins_home:
+    driver_opts:
+      type: none
+      device: '${VOLUME_JENKINS_HOME}'
+      o: bind
+
+  growi_data:
+    driver_opts:
+      type: none
+      device: '${VOLUME_GROWI_DATA}'
+      o: bind
+
+  growi-mongodb_configdb:
+    driver_opts:
+      type: none
+      device: '${VOLUME_GROWI_MONGODB_CONFIGDB}'
+      o: bind
+
+  growi-mongodb_db:
+    driver_opts:
+      type: none
+      device: '${VOLUME_GROWI_MONGODB_DB}'
+      o: bind
+
+  growi-elasticsearch_data:
+    driver_opts:
+      type: none
+      device: '${VOLUME_GROWI_ELASTICSEARCH_DATA}'
+      o: bind
+
+  growi-elasticsearch_plugins:
+    driver_opts:
+      type: none
+      device: '${VOLUME_GROWI_ELASTICSEARCH_PLUGINS}'
+      o: bind
+
+  growi-elasticsearch_config:
+      driver_opts:
+        type: none
+        device: '${VOLUME_GROWI_ELASTICSEARCH_CONFIG}'
+        o: bind
+
+  growi-redis_data:
+      driver_opts:
+        type: none
+        device: '${VOLUME_GROWI_REDIS_DATA}'
+        o: bind

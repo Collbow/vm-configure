@@ -1,0 +1,33 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.define :vm1 do |vm1|
+    vm1.vm.box = "Microsoft/EdgeOnWindows10"
+    vm1.vm.communicator = "winrm"
+    vm1.vm.synced_folder "./../../guest-share/windows10", "/users/IEUser/share", create: true
+
+    vm1.vm.network "private_network", ip: "192.168.33.102"
+
+    vm1.winrm.username = "IEUser"
+    vm1.winrm.password = "Passw0rd!"
+
+    vm1.vm.provision :shell, inline: "powershell -File \"C:\\users\\IEUser\\share\\os\\configure-1.ps1\""
+    vm1.vm.provision :reload
+    vm1.vm.provision :shell, inline: "powershell -File \"C:\\users\\IEUser\\share\\os\\configure-2.ps1\""
+
+    vm1.vm.provider "virtualbox" do |vb|
+      vb.gui = true
+      vb.name = "windows10"
+      vb.cpus = 2
+      vb.memory = "4096"
+      vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+      vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
+      vb.customize ["modifyvm", :id, "--vram", "128"]
+      vb.customize ['modifyvm', :id, '--graphicscontroller', 'vboxsvga']
+      vb.customize ['setextradata', :id, 'GUI/ScaleFactor', '2.00']
+    end 
+  end
+end

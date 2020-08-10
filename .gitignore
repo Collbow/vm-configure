@@ -1,0 +1,6 @@
+*.log
+*.zip
+.vagrant
+.vagrant.d
+.env
+VirtualBox VMs
