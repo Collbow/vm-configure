@@ -18,11 +18,11 @@ virtual machine configurate scripts project
 
 # Usage
 
-- Ubuntu 20.04
-https://www.collbow.com/blog/iac/473/
+* Ubuntu 20.04
+  https://www.collbow.com/blog/iac/473/
 
-- Windows10
-hhttps://www.collbow.com/blog/iac/575/
+* Windows10
+  https://www.collbow.com/blog/iac/575/
 
 # Author
 
