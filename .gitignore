@@ -1,5 +1,10 @@
 *.log
 *.zip
+*.iso
+*.vhd
+*.vdi
+*.vmdk
+*.box
 .vagrant
 .vagrant.d
 .env
