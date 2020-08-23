@@ -41,6 +41,7 @@ if [ ! "`vboxmanage list vms | grep '"'"${VM_NAME}"'"'`" ]; then
     vboxmanage modifyvm "${VM_NAME}" --audioout on
     vboxmanage modifyvm "${VM_NAME}" --usbxhci on
     vboxmanage modifyvm "${VM_NAME}" --nic1 nat
+    vboxmanage modifyvm "${VM_NAME}" --nictype1 virtio
     vboxmanage modifyvm "${VM_NAME}" --clipboard bidirectional
     vboxmanage modifyvm "${VM_NAME}" --draganddrop bidirectional
     vboxmanage setextradata "${VM_NAME}" GUI/ScaleFactor 2.00
