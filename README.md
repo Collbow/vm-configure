@@ -18,18 +18,25 @@ virtual machine configurate scripts project
 
 # Usage
 
-* Ubuntu 20.04
-  https://www.collbow.com/blog/iac/473/
+* Ubuntu 20.04 
+  - [English](https://www.collbow.com/en/blog-en/ica-en/848/)
+  - [Japanese](https://www.collbow.com/blog/iac/473/)
 
 * Windows10
-  https://www.collbow.com/blog/iac/575/
+  - [English](https://www.collbow.com/en/blog-en/ica-en/847/)
+  - [Japanese](https://www.collbow.com/blog/iac/575/)
 
-* MacOSX
-  https://www.collbow.com/blog/iac/713/
+* MacOS Catalina
+  - [English](https://www.collbow.com/en/blog-en/ica-en/846/)
+  - [Japanese](https://www.collbow.com/blog/iac/713/)
+
+* MacOS Big Sur
+  - [English](https://www.collbow.com/en/blog-en/ica-en/1942/)
+  - [Japanese](https://www.collbow.com/blog/iac/1863/)
 
 # Author
-
-* https://www.collbow.com/
+* [English](https://www.collbow.com/en/)
+* [Japanese](https://www.collbow.com/)
 
 # License
 
