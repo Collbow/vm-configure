@@ -1,3 +1,5 @@
+# Copyright © 2020-2021 Collbow All Rights Reserved
+
 cd "$PSScriptRoot"
 
 Set-WinHomeLocation -GeoId 0x7A
